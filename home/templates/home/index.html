@@ -1,5 +1,10 @@
 {% extends '_base.html' %}
 
 {% block content %}
-	<h1>Index page</h1>
+    <h1>Index page</h1>
+    <div class="card">
+        {% for post in posts %}
+            <a class="card-body" href="{{ post.get_absolute_url }}">{{ post.body|truncatewords:10 }}</a>
+        {% endfor %}
+    </div>
 {% endblock %}
