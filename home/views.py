@@ -3,18 +3,22 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-
 from django.contrib import messages
 from django.utils.text import slugify
 
 from .models import Post, Comment, Vote
-from .forms import PostCreateUpdateForm, CommentCreateForm, CommentReplyForm
+from .forms import PostCreateUpdateForm, CommentCreateForm, CommentReplyForm, PostSearchForm
 
 
 class HomeView(View):
+    form_class = PostSearchForm
+
     def get(self, request):
+        form = self.form_class
         posts = Post.objects.all()
-        return render(request, 'home/index.html', {'posts': posts})
+        if request.GET.get('search'):
+            posts = posts.filter(body__contains=request.GET['search'])
+        return render(request, 'home/index.html', {'posts': posts, 'form': form})
 
 
 class PostDetailView(View):
