@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.template.defaultfilters import slugify
 
-from .models import Post, Comment
+from .models import Post, Comment, Vote
 
 
 @admin.register(Post)
@@ -24,3 +24,11 @@ class CommentsAdmin(admin.ModelAdmin):
     search_fields = ['user', 'post']
     list_filter = ['created', 'is_reply']
     raw_id_fields = ['user', 'post', 'reply']
+
+
+@admin.register(Vote)
+class VoteAdmin(admin.ModelAdmin):
+    list_display = ['user', 'post']
+    search_fields = ['user', 'post']
+    list_filter = ['user',]
+    raw_id_fields = ['user', 'post']
